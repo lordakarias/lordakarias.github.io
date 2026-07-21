@@ -1,31 +1,541 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Home</title>
-	<link rel="stylesheet" href="css/main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zekarias Teshome Birhanu — Technology/Data Management Specialist at FAO Ethiopia</title>
+<meta name="description" content=" — GIS, remote sensing, and forest monitoring (MRV) systems for Ethiopia's National Forest Monitoring System.">
+<meta name="description" content="Portfolio of Zekarias Teshome Birhanu — IT & Data Management Specialist at FAO Ethiopia, working on forest monitoring, GIS, and remote sensing systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EDEFE7;
+    --paper-dim: #E2E5D8;
+    --ink: #16261E;
+    --ink-soft: #3F5348;
+    --canopy: #2F5233;
+    --canopy-bright: #4C7A52;
+    --soil: #A65A3C;
+    --satellite: #3E6D8E;
+    --gold: #C9A227;
+    --line: rgba(22,38,30,0.14);
+    --display: 'Fraunces', serif;
+    --mono: 'IBM Plex Mono', monospace;
+    --body: 'Inter', sans-serif;
+    --white: #fff
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--white);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+
+  .wrap{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ---------- eyebrow / coordinate labels ---------- */
+  .coord{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--canopy);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .coord::before{
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,162,39,0.18);
+    flex: none;
+  }
+
+  /* ---------- nav ---------- */
+  header.site{
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(237,239,231,0.88);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top: 18px; padding-bottom: 18px;
+  }
+  .brand{
+    font-family: var(--mono);
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    font-weight: 500;
+  }
+  .brand span{ color: var(--canopy); }
+  .navlinks{ display:flex; gap: 28px; list-style:none; margin:0; padding:0; }
+  .navlinks a{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-decoration:none;
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color .2s, color .2s;
+  }
+  .navlinks a:hover{ color: var(--canopy); border-color: var(--canopy); }
+  .navtoggle{ display:none; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding: 88px 0 64px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero h1{
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(2.4rem, 4.4vw, 3.6rem);
+    line-height: 1.06;
+    margin: 18px 0 20px;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em{
+    font-style: italic;
+    font-weight: 400;
+    color: var(--canopy);
+  }
+  .hero p.lede{
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0 0 30px;
+  }
+  .hero-cta{ display:flex; gap: 14px; flex-wrap: wrap; }
+  .btn{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    padding: 13px 20px;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items:center;
+    gap: 8px;
+    transition: transform .15s ease, background .2s ease, color .2s ease;
+  }
+  .btn-primary{ background: var(--canopy); color: var(--paper); }
+  .btn-primary:hover{ background: var(--ink); transform: translateY(-1px); }
+  .btn-ghost{ border: 1px solid var(--line); color: var(--ink); }
+  .btn-ghost:hover{ border-color: var(--canopy); color: var(--canopy); transform: translateY(-1px); }
+
+  /* ---------- canopy scan visual (signature element) ---------- */
+  .scanframe{
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: var(--ink);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px -20px rgba(22,38,30,0.45);
+  }
+  .scanframe svg{ width:100%; height:100%; display:block; }
+  .scan-caption{
+    position:absolute; left:14px; bottom:12px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.05em;
+    color: rgba(237,239,231,0.72);
+    text-transform: uppercase;
+  }
+  .scan-line{
+    animation: sweep 5s linear infinite;
+  }
+  .cell{ animation: flicker 5s linear infinite; }
+  @keyframes sweep{
+    0%{ transform: translateY(-4%); }
+    100%{ transform: translateY(104%); }
+  }
+  @keyframes flicker{
+    0%, 96%, 100% { opacity: var(--base-op, 0.22); }
+    98% { opacity: 0.9; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .scan-line, .cell{ animation: none; }
+  }
+
+  /* ---------- section scaffolding ---------- */
+  section{ padding: 76px 0; border-top: 1px solid var(--line); }
+  section .coord{ margin-bottom: 14px; }
+  h2.section-title{
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+    margin: 0 0 34px;
+    max-width: 30ch;
+  }
+
+  /* ---------- about ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 56px;
+  }
+  .about-grid p{ color: var(--ink-soft); max-width: 58ch; }
+  .about-grid p + p{ margin-top: 16px; }
+  .fact-list{ list-style:none; margin:0; padding:0; }
+  .fact-list li{
+    display:flex; justify-content:space-between; gap: 16px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.92rem;
+  }
+  .fact-list li:first-child{ padding-top: 0; }
+  .fact-list dt{ font-family: var(--mono); font-size: 11.5px; text-transform:uppercase; letter-spacing:.05em; color: var(--satellite); }
+  .fact-list dd{ margin:0; text-align:right; color: var(--ink); }
+
+  /* ---------- experience timeline ---------- */
+  .timeline{ position: relative; padding-left: 28px; }
+  .timeline::before{
+    content:""; position:absolute; left: 4px; top: 6px; bottom: 6px; width: 1px;
+    background: var(--line);
+  }
+  .tl-item{ position: relative; padding-bottom: 34px; }
+  .tl-item:last-child{ padding-bottom: 0; }
+  .tl-item::before{
+    content:""; position: absolute; left: -28px; top: 6px;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--paper); border: 2px solid var(--canopy);
+  }
+  .tl-item.current::before{ background: var(--gold); border-color: var(--gold); }
+  .tl-role{ font-family: var(--display); font-size: 1.15rem; font-weight: 600; margin: 0 0 4px; }
+  .tl-meta{ font-family: var(--mono); font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-soft); margin-bottom: 8px; }
+  .tl-desc{ color: var(--ink-soft); max-width: 62ch; font-size: 0.96rem; }
+
+  /* ---------- skills ---------- */
+  .skill-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .skill-card{ background: var(--paper); padding: 26px 28px; }
+  .skill-card h3{
+    font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .06em;
+    margin: 0 0 14px; color: var(--soil);
+  }
+  .chips{ display:flex; flex-wrap: wrap; gap: 8px; }
+  .chip{
+    font-size: 0.85rem;
+    padding: 5px 11px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- projects ---------- */
+  .proj-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap: 22px; }
+  .proj-card{
+    border: 1px solid var(--line);
+    padding: 26px;
+    border-radius: 4px;
+    background: var(--paper-dim);
+    transition: border-color .2s, transform .2s;
+  }
+  .proj-card:hover{ border-color: var(--canopy); transform: translateY(-2px); }
+  .proj-card h3{ font-family: var(--display); font-size: 1.08rem; margin: 0 0 8px; font-weight: 600; }
+  .proj-card p{ color: var(--ink-soft); font-size: 0.92rem; margin: 0; }
+  .proj-tag{
+    display:inline-block; font-family: var(--mono); font-size: 10.5px; text-transform: uppercase;
+    letter-spacing: .05em; color: var(--satellite); margin-bottom: 10px;
+  }
+
+  /* ---------- education / certs / languages ---------- */
+  .split{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; }
+  .split h3{ font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing:.06em; color: var(--canopy); margin: 0 0 16px; }
+  .split ul{ list-style:none; margin:0; padding:0; }
+  .split li{ padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 0.92rem; }
+  .split li:first-child{ padding-top:0; }
+  .split li b{ display:block; font-family: var(--display); font-weight: 600; font-size: 1rem; margin-bottom: 2px;}
+  .split li span{ color: var(--ink-soft); font-size: 0.85rem; }
+
+  /* ---------- footer / contact ---------- */
+  footer{
+    background: var(--ink);
+    color: var(--paper);
+    padding: 68px 0 40px;
+  }
+  footer .coord{ color: var(--gold); margin-bottom: 18px; }
+  footer h2{
+    font-family: var(--display); font-weight: 600;
+    font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+    margin: 0 0 22px; max-width: 20ch;
+  }
+  footer .foot-links{ display:flex; gap: 16px; flex-wrap: wrap; margin-bottom: 56px; }
+  footer .btn-primary{ background: var(--gold); color: var(--ink); }
+  footer .btn-primary:hover{ background: var(--paper); }
+  footer .btn-ghost{ border-color: rgba(237,239,231,0.28); color: var(--paper); }
+  footer .btn-ghost:hover{ border-color: var(--paper); color: var(--paper); }
+  .foot-bottom{
+    display:flex; justify-content: space-between; align-items:center;
+    padding-top: 26px; border-top: 1px solid rgba(237,239,231,0.16);
+    font-family: var(--mono); font-size: 11px; letter-spacing: .04em; text-transform: uppercase;
+    color: rgba(237,239,231,0.55); flex-wrap: wrap; gap: 10px;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 860px){
+    .hero{ grid-template-columns: 1fr; padding-top: 56px; }
+    .scanframe{ max-width: 360px; margin: 0 auto; order: -1; }
+    .about-grid{ grid-template-columns: 1fr; gap: 32px; }
+    .skill-grid{ grid-template-columns: 1fr; }
+    .proj-grid{ grid-template-columns: 1fr; }
+    .split{ grid-template-columns: 1fr; gap: 30px; }
+    .navlinks{ display:none; }
+    footer .foot-bottom{ flex-direction: column; align-items: flex-start; }
+  }
+
+  :focus-visible{ outline: 2px solid var(--canopy); outline-offset: 2px; }
+</style>
 </head>
 <body>
-	<!-- <div class="navbar">
-	  <a href="index.html" class="active">Nav 1</a>
-	  <a href="about.html">Nav 2</a>
-	  <a href="contact.html">Nav 3</a>
-	</div> -->
-	<div class="navbar">
-	  <a href="index.html" class="active">Home</a>
-	  <a href="about.html">About</a>
-	  <a href="contact.html">Contact</a>
-	</div>
 
-	<div id="myDIV" class="header">
-	  <h2>My To Do List</h2>
-	  <input type="text" id="myInput" placeholder="Title...">
-	  <span onclick="newElement()" class="addBtn">Add</span>
-	</div>
+<header class="site">
+  <nav class="wrap">
+    <div class="brand">ZEKARIAS<span> </span>TESHOME BIRHANU</div>
+    <ul class="navlinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
 
-	<ul id="myUL">
-	</ul> 
+<main>
+  <section class="hero wrap" style="border-top:none;">
+    <div>
+      <div class="coord">9.0192° N, 38.7525° E — ADDIS ABABA, ETHIOPIA</div>
+      <h1>Building the systems that <em>watch Ethiopia's forests</em> from space.</h1>
+      <p class="lede">IT & Data Management Specialist at FAO, embedded with Ethiopia's Forestry Development to run the servers, satellite pipelines, and GIS infrastructure behind the National Forest Monitoring System.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://www.linkedin.com/in/zekariasteshome/" target="_blank" rel="noopener">View LinkedIn</a>
+        <a class="btn btn-ghost" href="#experience">See the work ↓</a>
+      </div>
+    </div>
 
-	<script src="js/main.js"></script>
+    <div class="scanframe" role="img" aria-label="Animated illustration of a satellite scan line sweeping across a grid of forest-cover pixels">
+      <svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="scanGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#C9A227" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#C9A227" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#C9A227" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g id="grid"></g>
+        <rect class="scan-line" x="0" y="0" width="300" height="10" fill="url(#scanGrad)"/>
+      </svg>
+      <div class="scan-caption">NFMS · Landsat/Sentinel classification pass</div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <div>
+        <div class="coord">Field notes</div>
+        <h2 class="section-title">Ten years across networks, data platforms, and forest monitoring.</h2>
+        <p>I support the infrastructure behind Ethiopia's national forest monitoring — helping run the servers, GIS pipelines, and satellite-analysis tools that feed REDD+ reporting, ART-TREES verification, and the National Forest Inventory.</p>
+        <p>Before FAO, I worked across humanitarian data (CRS Ethiopia, Social Impact), private-sector engineering (Huawei, Ernst & Young), agritech (Green Way Farms), and hospitality IT — plus lecturing in electrical and computer engineering at AAiT and other Ethiopian universities.</p>
+      </div>
+      <dl class="fact-list">
+        <li><dt>Based</dt><dd>Addis Ababa, Ethiopia</dd></li>
+        <li><dt>Role</dt><dd>IT/Data Management Specialist, FAO</dd></li>
+        <li><dt>Focus</dt><dd>MRV, GIS, Remote Sensing, Infra</dd></li>
+        <li><dt>M.Sc.</dt><dd>Telematics, NTNU (Norway)</dd></li>
+        <li><dt>B.Sc.</dt><dd>Electrical & Computer Eng., AAU</dd></li>
+        <li><dt>Languages</dt><dd>Amharic, English, French, Norwegian</dd></li>
+      </dl>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="coord">Track record</div>
+      <h2 class="section-title">Experience</h2>
+      <div class="timeline">
+        <div class="tl-item current">
+          <div class="tl-role">IT/Data Management Specialist</div>
+          <div class="tl-meta">FAO Ethiopia · MRV II Project · Sep 2023 — Present</div>
+          <div class="tl-desc">Embedded with Ethiopia's Forestry Development on REDD+, ART-TREES, the National Forest Inventory, SEPAL-based satellite analysis, GHG accounting, and the National Forest Monitoring System. Manages EFD's servers and data infrastructure.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-role">Lecturer, Electrical & Computer Engineering</div>
+          <div class="tl-meta">AAiT / AAU and other Ethiopian universities</div>
+          <div class="tl-desc">Taught different courseworks at the university level.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-role">Prior roles</div>
+          <div class="tl-meta">CRS Ethiopia · Social Impact · UNDP (volunteer) · Green Way Farms · Intercontinental Addis Hotel · Huawei · Ernst & Young</div>
+          <div class="tl-desc">Work spanning humanitarian data systems, agritech, hospitality IT, telecom, and professional services.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="coord">Toolkit</div>
+      <h2 class="section-title">Skills</h2>
+      <div class="skill-grid">
+        <div class="skill-card">
+          <h3>Geospatial & MRV</h3>
+          <div class="chips">
+            <span class="chip">SEPAL</span><span class="chip">ArcGIS</span><span class="chip">QGIS</span>
+            <span class="chip">OpenForis</span><span class="chip">Remote Sensing</span><span class="chip">GHG Accounting</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Data Collection & Analysis</h3>
+          <div class="chips">
+            <span class="chip">CommCare</span><span class="chip">Kobotoolbox</span><span class="chip">ODK</span>
+            <span class="chip">SPSS</span><span class="chip">Tableau</span><span class="chip">Power BI</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Programming</h3>
+          <div class="chips">
+            <span class="chip">Python</span><span class="chip">R</span><span class="chip">Java</span><span class="chip">C / C++</span>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Web & Infrastructure</h3>
+          <div class="chips">
+            <span class="chip">Django</span><span class="chip">AngularJS</span><span class="chip">Ruby on Rails</span>
+            <span class="chip">HTML/CSS/JS</span><span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">SQL</span><span class="chip">Git</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--
+  <section id="projects">
+    <div class="wrap">
+      <div class="coord">Recent builds</div>
+      <h2 class="section-title">Projects & explorations</h2>
+      <div class="proj-grid">
+        <div class="proj-card">
+          <span class="proj-tag">Infrastructure</span>
+          <h3>Cloud stack on Hetzner</h3>
+          <p>Exploring a self-managed Django / PostgreSQL / PostGIS stack on Hetzner for geospatial data workloads.</p>
+        </div>
+        <div class="proj-card">
+          <span class="proj-tag">Automation</span>
+          <h3>Internal Telegram bot</h3>
+          <p>Prototyping an informational Telegram bot for internal FAO use — no data collection, purely informational.</p>
+        </div>
+        <div class="proj-card">
+          <span class="proj-tag">Interactive / CSS</span>
+          <h3>3D flipbook reader</h3>
+          <p>A multi-story HTML flipbook with CSS 3D page-flip animation, keyboard navigation, and a clickable table of contents.</p>
+        </div>
+        <div class="proj-card">
+          <span class="proj-tag">Education / Web Audio</span>
+          <h3>Shape Friends!</h3>
+          <p>A browser-based shape-recognition game for children, built with the Web Audio API and SVG-drawn shapes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <section id="credentials">
+    <div class="wrap split">
+      <div>
+        <h3>Education</h3>
+        <ul>
+          <li><b>M.Sc. Telematics — Information Systems & Communication Networks</b><span>Norwegian University of Science and Technology (NTNU), Norway</span></li>
+          <li><b>B.Sc. Electrical & Computer Engineering</b><span>Addis Ababa University</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Certifications</h3>
+        <ul>
+          <li><b>Professional certifications</b><span>IBM · Google · Esri · Cisco · Georgia Tech</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Languages</h3>
+        <ul>
+          <li><b>Amharic</b><span>Native</span></li>
+          <li><b>English</b><span>Professional</span></li>
+          <li><b>French</b><span>Intermediate</span></li>
+          <li><b>Norwegian</b><span>Beginner</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="coord">Get in touch</div>
+    <h2>Open to conversations on Technology, ICT, GIS systems, data infrastructure, and forest monitoring.</h2>
+    <div class="foot-links">
+      <a class="btn btn-primary" href="https://www.linkedin.com/in/zekariasteshome/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+      <a class="btn btn-ghost" href="#about">Back to top ↑</a>
+    </div>
+    <div class="foot-bottom">
+      <span>Zekarias Teshome Birhanu — Addis Ababa, Ethiopia</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Build the pixel-classification grid for the hero scan visual
+  (function(){
+    const NS = "http://www.w3.org/2000/svg";
+    const grid = document.getElementById("grid");
+    const cols = 12, rows = 12, size = 300 / cols;
+    const palette = ["#2F5233", "#4C7A52", "#3E6D8E", "#16261E"];
+    for (let r = 0; r < rows; r++){
+      for (let c = 0; c < cols; c++){
+        const rect = document.createElementNS(NS, "rect");
+        rect.setAttribute("x", c * size);
+        rect.setAttribute("y", r * size);
+        rect.setAttribute("width", size - 1);
+        rect.setAttribute("height", size - 1);
+        const color = palette[Math.floor(Math.random() * palette.length)];
+        const baseOp = (0.14 + Math.random() * 0.22).toFixed(2);
+        rect.setAttribute("fill", color);
+        rect.classList.add("cell");
+        rect.style.setProperty("--base-op", baseOp);
+        rect.style.opacity = baseOp;
+        rect.style.animationDelay = (Math.random() * 5).toFixed(2) + "s";
+        grid.appendChild(rect);
+      }
+    }
+  })();
+</script>
 
 </body>
 </html>
